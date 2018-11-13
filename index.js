@@ -40,7 +40,6 @@ if (!module.parent) {
 
 //Initialize storage
 initializeStorage().then(initialState => {
-  console.log("Last Timestamp: ", initialState.lastTimestamp)
 
   //Start scheduler
   const intervalEvent = new IntervalEvent(config.stampingTime, 2, true);

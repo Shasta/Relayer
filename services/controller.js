@@ -1,5 +1,6 @@
 const config = require('../config/config');
-const storage = require('node-persist');
+const crypto = require('crypto')
+const MerkleTree = require('merkletreejs')
 const { getLastGBatchHash } = require('../model/GlobalProofBatch/globalProofBatch.controller');
 const energyPrice = 0.13;
 const ipfs = require("../utils/ipfs");
@@ -9,9 +10,30 @@ var _ = require('lodash');
 exports.startSchedule = async function () {
 
     //Create a map with all the info for each hardware
-    let hardwareMap = await getHardwareData();
+    const [hardwareMap, leaves] = await getHardwareData();
+
+    //Create the merkel tree
+    const merkleTree = createMerkleTree(leaves);
+
+    //Store the merkle tree on db and the root on ethereum
+        
 
 }
+
+const createMerkleTree = async (dataLeaves) => {
+
+    const leaves = dataLeaves.map(x => sha256(JSON.stringify(x)));
+    const tree = new MerkleTree(leaves, sha256);
+
+    const root = tree.getRoot();
+
+
+}
+
+function sha256(data) {
+    // returns Buffer
+    return crypto.createHash('sha256').update(data).digest()
+  }
 
 const getHardwareData = async () => {
 
@@ -19,11 +41,12 @@ const getHardwareData = async () => {
     const query = await getLastGBatchHash();
     const ipfsData = await ipfs.get(query);
     const readableIpfsData = JSON.parse(ipfsData[0].content.toString('utf8'));
+    let leaves = [];
 
     for (let key in readableIpfsData.batches) {
 
         const entry = readableIpfsData.batches[key];
-        if (!hardwareMap.has(entry.hardware_id)) {
+        if (!hardwareMap.has(entry.hardware_id) && key < 3) {
 
             //Create json data
             const jsonData = {
@@ -42,6 +65,16 @@ const getHardwareData = async () => {
             jsonData.token_amount = energyPrice * jsonData.consumption;
 
             hardwareMap.set(entry.hardware_id, jsonData);
+            
+            //TODO: upload to ipfs
+            const ethHash = await ipfs.add([Buffer.from(JSON.stringify(jsonData))], {onlyHash: true});
+
+            const leaf = {
+                id: ethHash[0].hash,
+                amount: jsonData.consumption
+            };
+            leaves.push(leaf);
         }
     }
+    return [hardwareMap, leaves];
 }

@@ -53,6 +53,7 @@
     "ipfs-api": "^26.1.2",
     "joi": "10.6.0",
     "jsonwebtoken": "7.1.9",
+    "merkletreejs": "0.0.18",
     "method-override": "^2.3.10",
     "metrics-mongoose": "git+ssh://git@github.com:Shasta/metrics-mongoose.git#v0.2.3",
     "mongoose": "4.7.4",
