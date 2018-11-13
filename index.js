@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const util = require('util');
+const initializeStorage = require('./services/initialize_storage');
+const IntervalEvent = require('./utils/interval_event.js');
 
 // config should be imported before importing any other file
 const config = require('./config/config');
@@ -35,5 +37,14 @@ if (!module.parent) {
     console.info(`server started on port ${config.port} (${config.env})`); // eslint-disable-line no-console
   });
 }
+
+//Initialize storage
+initializeStorage().then(initialState => {
+  console.log("Last Timestamp: ", initialState.lastTimestamp)
+
+  //Start scheduler
+  const intervalEvent = new IntervalEvent(config.stampingTime, 2, true);
+  intervalEvent.start();
+})
 
 module.exports = app;

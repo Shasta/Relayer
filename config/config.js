@@ -21,7 +21,16 @@ const envVarsSchema = Joi.object({
   MONGO_HOST: Joi.string().required()
     .description('Mongo DB host url'),
   MONGO_PORT: Joi.number()
-    .default(27017)
+    .default(27017),
+  WEB3_PROVIDER: Joi.string()
+    .default("ws://localhost:8545"),
+  ACCOUNT_PRIVATE_KEY: Joi.string().required()
+    .description("Account private key with ether funds"),
+  STAMP_TIME_MS: Joi.number().required()
+    .description("The stamping time in ms"),
+  NETWORK_ID: Joi.number().required()
+    .description("The truffle configured network identifier")
+
 }).unknown()
   .required();
 
@@ -38,7 +47,11 @@ const config = {
   mongo: {
     host: envVars.MONGO_HOST,
     port: envVars.MONGO_PORT
-  }
+  },
+  web3Provider: envVars.WEB3_PROVIDER,
+  accountPrivateKey: envVars.ACCOUNT_PRIVATE_KEY,
+  stampingTime: envVars.STAMP_TIME_MS,
+  networkId: envVars.NETWORK_ID
 };
 
 module.exports = config;
