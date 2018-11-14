@@ -19,10 +19,6 @@
     "test:check-coverage": "yarn test:coverage && istanbul check-coverage",
     "report-coverage": "coveralls < ./coverage/lcov.info"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:KunalKapadia/express-mongoose-es6-rest-api.git"
-  },
   "keywords": [
     "express",
     "node",
@@ -53,9 +49,10 @@
     "ipfs-api": "^26.1.2",
     "joi": "10.6.0",
     "jsonwebtoken": "7.1.9",
+    "keccak": "^1.4.0",
     "merkletreejs": "0.0.18",
     "method-override": "^2.3.10",
-    "metrics-mongoose": "git+ssh://git@github.com:Shasta/metrics-mongoose.git#v0.2.3",
+    "metrics-mongoose": "git+ssh://git@github.com:Shasta/metrics-mongoose.git#1f4ac132fdc2d073a89bfcd48e281b4ba036dd6a",
     "mongoose": "4.7.4",
     "mongoose-autopopulate": "^0.9.0",
     "mongoose-paginate": "^5.0.3",

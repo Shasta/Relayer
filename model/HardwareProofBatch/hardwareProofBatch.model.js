@@ -1,9 +1,8 @@
+var _ = require('lodash');
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 const autopopulate = require('mongoose-autopopulate');
 const { HardwareProofBatch } = require('metrics-mongoose');
-
-var _ = require('lodash');
 
 /* Statics methods of the model */
 HardwareProofBatch.statics = {};

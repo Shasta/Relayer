@@ -3,8 +3,6 @@ const mongoosePaginate = require('mongoose-paginate');
 const autopopulate = require('mongoose-autopopulate');
 const { GlobalProofBatch } = require('metrics-mongoose');
 
-var _ = require('lodash');
-
 /* Statics methods of the model */
 GlobalProofBatch.statics = {};
 
